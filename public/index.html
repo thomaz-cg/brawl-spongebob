@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Batalha do Fundo do Mar 🧽</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="c"></canvas>
+
+  <div id="ui">
+    <div id="hud">
+      <div class="ti">
+        <span class="tn">🔵 Azul</span>
+        <div class="hbar"><div class="hfill hbl" id="hb" style="width:100%"></div></div>
+        <span id="hbt" style="color:#29b6f6;font-size:11px">3/3</span>
+      </div>
+      <div id="sc">0 — 0</div>
+      <div class="ti">
+        <span id="hrt" style="color:#ef5350;font-size:11px">3/3</span>
+        <div class="hbar"><div class="hfill hrl" id="hr" style="width:100%"></div></div>
+        <span class="tn">Vermelho 🔴</span>
+      </div>
+    </div>
+    <button id="menuBtn" onclick="openMenu()">☰</button>
+  </div>
+
+  <div id="hint">WASD mover · SETAS atirar em qualquer direção · ESC pausar</div>
+
+  <div id="pmenu"><div id="pmbox">
+    <h2>⏸ Pausado</h2>
+    <button class="mbtn" onclick="resumeGame()">▶ Continuar</button>
+    <button class="mbtn" onclick="restartGame()">🔄 Reiniciar</button>
+    <button class="mbtn danger" onclick="quitGame()">🚪 Sair para o menu</button>
+  </div></div>
+
+  <div id="overlay"><div id="obox">
+    <div id="otitle">🧽 Batalha do Fundo do Mar</div>
+    <div id="osub">WASD = mover · Setas = atirar em qualquer direção!</div>
+    <div id="csel">
+      <div class="cc sel" id="cc-spongebob"><span class="ce">🧽</span><div class="cn">Bob Esponja</div><div class="cs">Vel★★★ HP★★</div></div>
+      <div class="cc" id="cc-patrick"><span class="ce">⭐</span><div class="cn">Patrick</div><div class="cs">Vel★ HP★★★</div></div>
+      <div class="cc" id="cc-squidward"><span class="ce">🐙</span><div class="cn">Lula Molusco</div><div class="cs">Vel★★ ATQ★★★</div></div>
+      <div class="cc" id="cc-sandy"><span class="ce">🐿️</span><div class="cn">Sandy</div><div class="cs">Vel★★★ ATQ★★</div></div>
+      <div class="cc" id="cc-gary"><span class="ce">🐌</span><div class="cn">Gary</div><div class="cs">Vel★ HP★★★★</div></div>
+    </div>
+    <input id="name-input" type="text" maxlength="16" placeholder="Seu nome no ranking..." />
+    <button id="sbtn">⚔️ BATALHAR!</button>
+  </div></div>
+
+  <script type="module" src="firebase.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
