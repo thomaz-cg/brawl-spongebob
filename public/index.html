@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Batalha do Fundo do Mar 🧽</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="c"></canvas>
+
+  <div id="ui">
+    <div id="hud">
+      <div class="team-info">
+        <span class="team-name">🔵 Azul</span>
+        <div class="hp-bar"><div class="hp-fill hp-blue" id="hb" style="width:100%"></div></div>
+        <span id="hbt" style="color:#4fc3f7;font-size:11px">3/3</span>
+      </div>
+      <div id="score">0 - 0</div>
+      <div class="team-info">
+        <span id="hrt" style="color:#ff7043;font-size:11px">3/3</span>
+        <div class="hp-bar"><div class="hp-fill hp-red" id="hr" style="width:100%"></div></div>
+        <span class="team-name">Vermelho 🔴</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="hint">⬆⬇⬅➡ mover &nbsp;|&nbsp; ESPAÇO atirar</div>
+
+  <!-- OVERLAY: Seleção de personagem / tela de resultado -->
+  <div id="overlay">
+    <div id="obox">
+      <div id="otitle">🧽 Batalha do Fundo do Mar</div>
+      <div id="osub">Escolha seu personagem!</div>
+
+      <div id="char-select">
+        <div class="ccard sel" id="cc-spongebob">
+          <span class="cemoji">🧽</span>
+          <div class="cname">Bob Esponja</div>
+          <div class="cstat">Vel:★★★ Dano:★★</div>
+        </div>
+        <div class="ccard" id="cc-patrick">
+          <span class="cemoji">⭐</span>
+          <div class="cname">Patrick</div>
+          <div class="cstat">Vel:★ Dano:★★★</div>
+        </div>
+        <div class="ccard" id="cc-squidward">
+          <span class="cemoji">🐙</span>
+          <div class="cname">Lula Molusco</div>
+          <div class="cstat">Vel:★★ Dano:★★★</div>
+        </div>
+      </div>
+
+      <!-- Ranking online (Firebase) -->
+      <div id="ranking-box">
+        <div id="ranking-title">🏆 Ranking Global</div>
+        <div id="ranking-list">Carregando...</div>
+      </div>
+
+      <input id="name-input" type="text" maxlength="16" placeholder="Seu nome no ranking..." />
+      <button id="sbtn">⚔️ BATALHAR!</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script type="module" src="firebase.js"></script>
+  <!-- Game logic -->
+  <script src="game.js"></script>
+</body>
+</html>
