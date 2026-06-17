@@ -508,7 +508,9 @@ function moveP(p,dx,dy){
 }
 
 function getAiTarget(p){
-  const SIGHT=280,BUSH_SIGHT=55;
+  // jogador tem alcance de mira maior que os bots, para facilitar
+  const isPlayer=(p===players[0]);
+  const SIGHT=isPlayer?360:280, BUSH_SIGHT=isPlayer?80:55;
   const enemies=players.filter(e=>e.team!==p.team&&e.alive);
   if(!enemies.length)return null;
   const visible=enemies.filter(e=>{
@@ -527,7 +529,17 @@ function shootP(s){
     const t=getAiTarget(s);if(!t)return;
     const dist=Math.hypot(t.x-s.x,t.y-s.y);
     dx=(t.x-s.x)/dist;dy=(t.y-s.y)/dist;
-  }else{playShoot(s.char);}
+  }else{
+    // AUTO-AIM para o jogador: mira no inimigo visível mais próximo
+    const t=getAiTarget(s);
+    if(t){
+      const dist=Math.hypot(t.x-s.x,t.y-s.y);
+      dx=(t.x-s.x)/dist;dy=(t.y-s.y)/dist;
+      // atualiza a direção que o personagem encara para o alvo
+      s.facing=t.x>s.x?1:-1;
+    }
+    playShoot(s.char);
+  }
   const d=CHARS[s.char];
   bullets.push({x:s.x,y:s.y,dx:dx*s.bs,dy:dy*s.bs,team:s.team,dmg:s.dmg,color:d.bColor,r:d.bR,life:110});
 }
@@ -655,10 +667,30 @@ function drawMap(){
 
 function drawAimArrow(p){
   if(!p.alive||p!==players[0])return;
-  const len=p.r+16,ex=p.x+p.aimDx*len,ey=p.y+p.aimDy*len;
-  ctx.save();ctx.strokeStyle='rgba(255,255,80,0.65)';ctx.lineWidth=2;ctx.lineCap='round';ctx.setLineDash([3,4]);
-  ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(ex,ey);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(255,255,80,0.9)';ctx.beginPath();ctx.arc(ex,ey,3.5,0,Math.PI*2);ctx.fill();ctx.restore();
+  // mostra a linha de mira apontando para o alvo do auto-aim
+  const t=getAiTarget(p);
+  if(t){
+    const dist=Math.hypot(t.x-p.x,t.y-p.y);
+    const adx=(t.x-p.x)/dist, ady=(t.y-p.y)/dist;
+    // linha de mira até o alvo
+    ctx.save();ctx.strokeStyle='rgba(255,80,80,0.5)';ctx.lineWidth=2;ctx.lineCap='round';ctx.setLineDash([5,5]);
+    ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(t.x,t.y);ctx.stroke();ctx.setLineDash([]);
+    // marcador de alvo no inimigo
+    ctx.strokeStyle='rgba(255,60,60,0.85)';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.arc(t.x,t.y,p.r+6,0,Math.PI*2);ctx.stroke();
+    // mira cruzada
+    ctx.beginPath();ctx.moveTo(t.x-p.r-10,t.y);ctx.lineTo(t.x-p.r-2,t.y);
+    ctx.moveTo(t.x+p.r+2,t.y);ctx.lineTo(t.x+p.r+10,t.y);
+    ctx.moveTo(t.x,t.y-p.r-10);ctx.lineTo(t.x,t.y-p.r-2);
+    ctx.moveTo(t.x,t.y+p.r+2);ctx.lineTo(t.x,t.y+p.r+10);ctx.stroke();
+    ctx.restore();
+  }else{
+    // sem alvo: seta na direção do movimento
+    const len=p.r+16,ex=p.x+p.aimDx*len,ey=p.y+p.aimDy*len;
+    ctx.save();ctx.strokeStyle='rgba(255,255,80,0.55)';ctx.lineWidth=2;ctx.lineCap='round';ctx.setLineDash([3,4]);
+    ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(ex,ey);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='rgba(255,255,80,0.85)';ctx.beginPath();ctx.arc(ex,ey,3.5,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
 }
 
 function drawPlayer(p){
