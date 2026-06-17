@@ -46,11 +46,13 @@ body{background:#051c38;font-family:'Nunito',sans-serif;overflow:hidden;user-sel
 .mbtn.audio:hover{background:rgba(41,182,246,0.18);border-color:#29b6f6}
 
 /* ─── OCEAN BACKGROUND CANVAS ───────────────── */
-#ocean-bg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
+#ocean-bg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.35}
 
 /* ─── MAIN OVERLAY ───────────────────────────── */
 #overlay{position:fixed;top:0;left:0;width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;z-index:300}
+  display:flex;align-items:center;justify-content:center;z-index:300;
+  background-image:url('bobstarsimage.png');
+  background-size:cover;background-position:center;background-repeat:no-repeat}
 
 #obox{position:relative;z-index:2;
   background:linear-gradient(160deg,rgba(4,18,42,0.96),rgba(6,30,72,0.94));
