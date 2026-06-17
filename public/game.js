@@ -266,6 +266,25 @@ function drawGary(ctx,x,y,dir,team){
 }
 const SPRITES={spongebob:drawSpongebob,patrick:drawPatrick,squidward:drawSquidward,sandy:drawSandy,gary:drawGary};
 
+// Custom image skin for Bob (user uploads bobstars1.png to public/)
+const bobImg=new Image();
+let bobImgReady=false;
+bobImg.onload=()=>{bobImgReady=true;};
+bobImg.onerror=()=>{bobImgReady=false;};
+bobImg.src='bobstars1.png';
+
+function drawBobImage(ctx,x,y,dir,team){
+  const size=54;
+  const f=dir>0?1:-1;
+  ctx.save();ctx.globalAlpha=.25;ctx.fillStyle='rgba(0,0,0,.5)';
+  ctx.beginPath();ctx.ellipse(x,y+size*.42,size*.32,size*.14,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  ctx.strokeStyle=team==='blue'?'rgba(41,182,246,0.85)':'rgba(239,83,80,0.85)';ctx.lineWidth=3;
+  ctx.beginPath();ctx.ellipse(x,y+size*.42,size*.36,size*.16,0,0,Math.PI*2);ctx.stroke();
+  ctx.save();ctx.translate(x,y);ctx.scale(f,1);
+  ctx.drawImage(bobImg,-size/2,-size/2,size,size);
+  ctx.restore();
+}
+
 // ═══ GAME DATA ═══════════════════════════════════════════════
 const CHARS={
   spongebob:{speed:4.5,hp:300,dmg:20,bs:8.5,fr:26,bColor:'#00cfff',bR:4,r:15},
@@ -660,7 +679,11 @@ function drawPlayer(p){
   ctx.fillStyle='rgba(80,50,10,0.4)';ctx.beginPath();ctx.ellipse(p.x+3,p.y+p.r+2,p.r*.85,4,0,0,Math.PI*2);ctx.fill();ctx.restore();
   if(inBush)ctx.globalAlpha=bushAlpha;
   ctx.save();ctx.shadowColor=p.team==='blue'?'rgba(41,182,246,0.5)':'rgba(239,83,80,0.5)';ctx.shadowBlur=16;
-  const spr=SPRITES[p.char];if(spr)spr(ctx,p.x,p.y,p.facing,p.team);
+  if(p.char==='spongebob'&&bobImgReady){
+    drawBobImage(ctx,p.x,p.y,p.facing,p.team);
+  }else{
+    const spr=SPRITES[p.char];if(spr)spr(ctx,p.x,p.y,p.facing,p.team);
+  }
   ctx.restore();
   if(inBush)ctx.globalAlpha=bushAlpha;
   const bw=p.r*3,bh=6,bx=p.x-bw/2,by=p.y-p.r-28;
